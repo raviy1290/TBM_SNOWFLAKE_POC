@@ -1,0 +1,11 @@
+insert into RAW_CLOUD_DAILY
+select
+    invoice_id,
+    date_trunc('day', usage_start_date) as event_date,
+    service_name,
+    usage_type,
+    sum(unblended_cost) as daily_cost,
+    max(currency) as currency,
+    any_value(resource_tags) as tags
+from RAW_CLOUD
+group by invoice_id, date_trunc('day', usage_start_date), service_name, usage_type;

@@ -1,0 +1,17 @@
+select * from ALLOCATED_COST;
+
+select business_entity_id, sum(allocated_amount) as tco, event_date
+from ALLOCATED_COST
+group by event_date, business_entity_id
+order by event_date, tco asc;
+
+-- cost breakdown as towewr and app
+
+select cost_tower, sum(allocated_amount) as spend
+from ALLOCATED_COST group by cost_tower
+
+
+select business_entity_id, cost_tower, sum(allocated_amount) as spend
+from ALLOCATED_COST
+group by business_entity_id, cost_tower
+order by business_entity_id, spend desc;

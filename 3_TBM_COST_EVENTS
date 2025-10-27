@@ -1,0 +1,55 @@
+insert into COST_EVENT
+-- Cloud (from CLOUD_RAW_DAILY)
+select
+    uuid_string() as id,
+    'AWS' as source_system,
+    concat(invoice_id, '#', usage_type, '#', event_date) as source_reference,
+    event_date,
+    daily_cost as amount,
+    currency,
+    daily_cost as normalized_amount,   -- FX stub
+    currency as normalized_currency,
+    'CLOUD' as cost_pool,
+    null as cost_tower,
+    tags,
+    object_construct('service_name', service_name, 'usage_type', usage_type) as usage_metrics
+from RAW_CLOUD_DAILY
+
+union all
+
+-- SaaS (from RAW_SAAS)
+select
+    uuid_string(),
+    'SAAS',
+    concat(invoice_id, '#', vendor),
+    invoice_date,
+    charge_amount,
+    currency,
+    charge_amount,
+    currency,
+    'SAAS',
+    null,
+    object_construct('vendor', vendor, 'service', service),
+    case when seat_count is not null then object_construct('seats', seat_count) else null end
+from RAW_SAAS
+
+union all
+
+-- Labor (from RAW_LABOR)
+select
+    uuid_string(),
+    'LABOR',
+    concat(emp_id, '#', salary_month),
+    salary_month,
+    amount,
+    currency,
+    amount,
+    currency,
+    'LABOR',
+    null,
+    object_construct('department', department, 'employee', emp_name),
+    object_construct('fte_months', 1)
+from RAW_LABOR;
+
+
+--- select * from COST_EVENT

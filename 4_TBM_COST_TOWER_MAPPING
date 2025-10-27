@@ -1,0 +1,78 @@
+-- Cloud Towers
+update COST_EVENT
+set cost_tower = case
+    when source_system = 'AWS' and usage_metrics:"usage_type"::string ilike '%EC2%' then 'COMPUTE'
+    when source_system = 'AWS' and usage_metrics:"usage_type"::string ilike '%EBS%' then 'STORAGE'
+    when source_system = 'AWS' and usage_metrics:"usage_type"::string ilike '%S3%' then 'STORAGE'
+    when source_system = 'AWS' and usage_metrics:"usage_type"::string ilike '%RDS:Storage%' then 'STORAGE'
+    when source_system = 'AWS' and usage_metrics:"usage_type"::string ilike '%RDS%' then 'DATABASE'
+    when source_system = 'AWS' and usage_metrics:"usage_type"::string ilike '%KMS%' then 'SECURITY'
+    else cost_tower
+end
+where source_system = 'AWS';
+
+
+-- Labor Towers
+update COST_EVENT
+set cost_tower = case
+    when source_system = 'LABOR' and tags:"department"::string = 'Engineering' then 'ENG_LABOR'
+    when source_system = 'LABOR' and tags:"department"::string = 'Ops' then 'OPS_LABOR'
+    when source_system = 'LABOR' and tags:"department"::string = 'Shared Services' then 'SHARED_SERVICES'
+    else cost_tower
+end
+where source_system = 'LABOR';
+
+
+-- SaaS Towers
+update COST_EVENT
+set cost_tower = case
+    when source_system = 'SAAS' and tags:"vendor"::string in ('Salesforce','Workday','ServiceNow') then 'BUSINESS_SAAS'
+    when source_system = 'SAAS' and tags:"vendor"::string in ('Slack','Zoom') then 'COLLAB_SAAS'
+    else cost_tower
+end
+where source_system = 'SAAS';
+
+
+
+-- Insert 90% into Compute
+insert into COST_EVENT
+select
+    uuid_string(),
+    source_system,
+    source_reference || '-split90',
+    event_date,
+    normalized_amount * 0.90,
+    currency,
+    normalized_amount * 0.90,
+    normalized_currency,
+    cost_pool,
+    'COMPUTE' as cost_tower,
+    tags,
+    usage_metrics
+from COST_EVENT
+where source_system = 'SAAS'
+  and tags:"vendor"::string in ('Snowflake','Databricks');
+
+-- Insert 10% into Business SaaS
+insert into COST_EVENT
+select
+    uuid_string(),
+    source_system,
+    source_reference || '-split10',
+    event_date,
+    normalized_amount * 0.10,
+    currency,
+    normalized_amount * 0.10,
+    normalized_currency,
+    cost_pool,
+    'BUSINESS_SAAS' as cost_tower,
+    tags,
+    usage_metrics
+from COST_EVENT
+where source_system = 'SAAS'
+  and tags:"vendor"::string in ('Snowflake','Databricks');
+
+-- Delete original unsplit rows
+delete from COST_EVENT
+where source_system = 'SAAS'
+  and tags:"vendor"::string in ('Snowflake','Databricks');

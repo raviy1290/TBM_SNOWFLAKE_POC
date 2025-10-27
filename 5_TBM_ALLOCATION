@@ -1,0 +1,44 @@
+-- Expand percentage rules
+insert into ALLOCATED_COST
+select
+    uuid_string() as id,
+    ce.id as cost_event_id,
+    be.key::string as business_entity_id,
+    ce.cost_tower,
+    ce.normalized_amount * be.value::float as allocated_amount,
+    'PERCENTAGE',
+    ar.id as allocation_rule_id,
+    ce.event_date
+from COST_EVENT ce
+join ALLOCATION_RULE ar
+  on ce.cost_tower = ar.cost_tower and ar.method = 'PERCENTAGE'
+, lateral flatten(input => ar.parameters) be;
+
+
+-- Simplified usage-based allocation
+insert into ALLOCATED_COST
+with usage as (
+    select
+        tags:"Application"::string as app,
+        sum(normalized_amount) as spend
+    from COST_EVENT
+    where cost_tower = 'COMPUTE'
+    group by tags:"Application"
+),
+totals as (
+    select sum(spend) as total_spend from usage
+)
+select
+    uuid_string(),
+    ce.id,
+    u.app as business_entity_id,
+    ce.cost_tower,
+    ce.normalized_amount * (u.spend / t.total_spend),
+    'USAGE',
+    ar.id,
+    ce.event_date
+from COST_EVENT ce
+join ALLOCATION_RULE ar
+  on ce.cost_tower = ar.cost_tower and ar.method = 'USAGE'
+join usage u on ce.tags:"Application"::string = u.app
+join totals t on 1=1;

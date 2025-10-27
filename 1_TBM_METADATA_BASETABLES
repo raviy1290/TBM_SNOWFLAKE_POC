@@ -1,0 +1,201 @@
+create
+or replace table RAW_CLOUD (
+    invoice_id string,
+    usage_start_date timestamp,
+    usage_end_date timestamp,
+    service_name string,
+    usage_type string,
+    unblended_cost number(18, 2),
+    currency string,
+    resource_tags variant
+);
+create
+or replace table RAW_SAAS (
+    invoice_id string,
+    invoice_date date,
+    vendor string,
+    service string,
+    seat_count integer,
+    charge_amount number(18, 2),
+    currency string
+);
+create
+or replace table RAW_LABOR (
+    emp_id string,
+    emp_name string,
+    department string,
+    salary_month date,
+    amount number(18, 2),
+    currency string
+);
+create
+or replace table RAW_CLOUD_DAILY (
+    invoice_id string,
+    event_date date,
+    service_name string,
+    usage_type string,
+    daily_cost number(18, 2),
+    currency string,
+    tags variant
+);
+create
+or replace table COST_EVENT (
+    id string,
+    -- unique ID
+    source_system string,
+    -- AWS, SAAS, LABOR
+    source_reference string,
+    -- invoice ID / employee ref
+    event_date date,
+    -- normalized date
+    amount number(18, 2),
+    -- original amount
+    currency string,
+    -- original currency
+    normalized_amount number(18, 2),
+    -- amount after FX (stub: same as amount for now)
+    normalized_currency string,
+    -- standard currency, e.g., USD
+    cost_pool string,
+    -- CLOUD, SAAS, LABOR
+    cost_tower string,
+    -- will be mapped later
+    tags variant,
+    -- flexible JSON tags
+    usage_metrics variant -- flexible JSON usage metrics
+);
+create
+or replace table BUSINESS_ENTITY (
+    id string,
+    name string,
+    entity_type string -- e.g. 'Application', 'BusinessUnit'
+);
+insert into
+    BUSINESS_ENTITY
+values
+    ('APP-A', 'AppA', 'Application'),
+    ('APP-B', 'AppB', 'Application'),
+    ('APP-C', 'AppC', 'Application'),
+    ('BU-1', 'Finance', 'BusinessUnit'),
+    ('BU-2', 'Engineering', 'BusinessUnit')
+    ('BU-3', 'CustomerOps', 'BusinessUnit');
+
+
+create
+    or replace table ALLOCATION_RULE (
+        id string,
+        cost_tower string,
+        method string,
+        -- 'PERCENTAGE' or 'USAGE'
+        parameters variant,
+        -- JSON with rule details
+        target_entity_ids array,
+        -- list of business entity IDs
+        active_from date,
+        active_to date
+    );
+-- Example percentage split for Shared Services Labor
+insert into
+    ALLOCATION_RULE
+select
+    column1 as id,
+    column2 as cost_tower,
+    column3 as method,
+    PARSE_JSON(column4) as parameters,
+    array_construct(column5) as target_entity_ids,
+    column6 as active_from,
+    column7 as active_to
+FROM
+values
+    (
+        'R1',
+        'SHARED_SERVICES',
+        'PERCENTAGE',
+        '{"APP-A":0.5,"APP-B":0.5}',
+        '"APP-A","APP-B"',
+        '2025-01-01',
+        '2025-12-31'
+    ),
+    (
+        'R2',
+        'COMPUTE',
+        'USAGE',
+        '{}',
+        '"APP-A","APP-B", "APP-C"',
+        '2025-01-01',
+        '2025-12-31'
+    ),
+    (
+        'R3',
+        'ENG_LABOR',
+        'USAGE',
+        '{}',
+        '"APP-A","APP-B", "APP-C"',
+        '2025-01-01',
+        '2025-12-31'
+    ),
+    (
+        'R4',
+        'OPS_LABOR',
+        'PERCENTAGE',
+        '{"APP-A":0.7,"APP-B":0.2, "APP-C":0.1}',
+        '"APP-A","APP-B", "APP-C"',
+        '2025-01-01',
+        '2025-12-31'
+    ),
+    (
+        'R5',
+        'STORAGE',
+        'USAGE',
+        '{}',
+        '"APP-A","APP-B","APP-C"',
+        '2025-01-01',
+        '2025-12-31'
+    ),
+    (
+        'R6',
+        'DATABASE',
+        'USAGE',
+        '{}',
+        '"APP-A","APP-B", "APP-C"',
+        '2025-01-01',
+        '2025-12-31'
+    ),
+    (
+        'R7',
+        'SECURITY',
+        'USAGE',
+        '{}',
+        '"APP-A","APP-B", "APP-C"',
+        '2025-01-01',
+        '2025-12-31'
+    ),
+    (
+        'R8',
+        'BUSINESS_SAAS',
+        'USAGE',
+        '{}',
+        '"APP-A","APP-B","APP-C"',
+        '2025-01-01',
+        '2025-12-31'
+    ),
+    (
+        'R9',
+        'COLLAB_SAAS',
+        'USAGE',
+        '{}',
+        '"APP-A","APP-B", "APP-C"',
+        '2025-01-01',
+        '2025-12-31'
+    );
+create
+    or replace table ALLOCATED_COST (
+        id string,
+        cost_event_id string,
+        business_entity_id string,
+        cost_tower string,
+        allocated_amount number(18, 2),
+        allocation_method string,
+        allocation_rule_id string,
+        event_date date
+    );
