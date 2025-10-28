@@ -1,4 +1,4 @@
-# TBM_SNOWFLAKE_POC
+# Vibe coding - TBM_SNOWFLAKE_POC
 # 💰 Technology Business Management (TBM) on Snowflake — MVP
 
 This repo contains a **minimal but extensible TBM cost transparency pipeline** built on **Snowflake**.  
