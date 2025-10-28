@@ -1,0 +1,11 @@
+invoice_id,usage_start_date,usage_end_date,service_name,usage_type,unblended_cost,currency,resource_tags
+INV-2025-07,2025-07-01 00:00:00,2025-07-01 23:59:59,AmazonEC2,USE1-BoxUsage:t3.medium,120.5,USD,"{""Application"":""AppA"",""Environment"":""Prod""}"
+INV-2025-07,2025-07-01 00:00:00,2025-07-01 23:59:59,AmazonEC2,EBS:VolumeUsage.gp2,35.2,USD,"{""Application"":""AppA"",""Environment"":""Prod""}"
+INV-2025-07,2025-07-01 00:00:00,2025-07-01 23:59:59,AmazonRDS,RDS:Multi-AZUsage,80.75,USD,"{""Application"":""AppB"",""Environment"":""Prod""}"
+INV-2025-07,2025-07-01 00:00:00,2025-07-01 23:59:59,AmazonRDS,RDS:StorageUsage.gp2,25.3,USD,"{""Application"":""AppB"",""Environment"":""Prod""}"
+INV-2025-07,2025-07-01 00:00:00,2025-07-01 23:59:59,AmazonEKS,EKS:PerCluster-Hours,15.0,USD,"{""Application"":""AppC"",""Environment"":""Dev""}"
+INV-2025-07,2025-07-01 00:00:00,2025-07-01 23:59:59,AmazonEKS,EC2:CPU-Hours,60.0,USD,"{""Application"":""AppC"",""Environment"":""Dev""}"
+INV-2025-07,2025-07-01 00:00:00,2025-07-01 23:59:59,AmazonS3,S3:Storage-GB,45.9,USD,"{""Application"":""Shared"",""Environment"":""Prod""}"
+INV-2025-07,2025-07-01 00:00:00,2025-07-01 23:59:59,AmazonS3,S3:Requests-Tier1,12.1,USD,"{""Application"":""Shared"",""Environment"":""Prod""}"
+INV-2025-07,2025-07-01 00:00:00,2025-07-01 23:59:59,AWSKMS,KMS:Requests,5.25,USD,"{""Application"":""AppA"",""Environment"":""Prod""}"
+INV-2025-07,2025-07-01 00:00:00,2025-07-01 23:59:59,AWSKMS,KMS:KeyUsage,3.5,USD,"{""Application"":""AppB"",""Environment"":""Prod""}"

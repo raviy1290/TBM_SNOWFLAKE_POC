@@ -1,0 +1,6 @@
+emp_id,emp_name,department,salary_month,amount,currency
+E001,Alice,Engineering,2025-07-01,12000.0,USD
+E002,Bob,Engineering,2025-07-01,11000.0,USD
+E003,Charlie,Ops,2025-07-01,9500.0,USD
+E004,Diana,Ops,2025-07-01,10000.0,USD
+E005,Eve,Shared Services,2025-07-01,8000.0,USD

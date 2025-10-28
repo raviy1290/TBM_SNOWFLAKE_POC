@@ -1,0 +1,51 @@
+emp_id,emp_name,department,salary_month,amount,currency
+E001,Alice,Engineering,2025-07-01,467.41,USD
+E002,Bob,Engineering,2025-07-01,271.18,USD
+E003,Charlie,Ops,2025-07-01,317.74,USD
+E004,Diana,Ops,2025-07-01,328.88,USD
+E005,Eve,Shared Services,2025-07-01,404.95,USD
+E001,Alice,Engineering,2025-07-02,358.29,USD
+E002,Bob,Engineering,2025-07-02,318.45,USD
+E003,Charlie,Ops,2025-07-02,435.78,USD
+E004,Diana,Ops,2025-07-02,400.79,USD
+E005,Eve,Shared Services,2025-07-02,321.54,USD
+E001,Alice,Engineering,2025-07-03,468.66,USD
+E002,Bob,Engineering,2025-07-03,435.73,USD
+E003,Charlie,Ops,2025-07-03,258.26,USD
+E004,Diana,Ops,2025-07-03,290.14,USD
+E005,Eve,Shared Services,2025-07-03,213.73,USD
+E001,Alice,Engineering,2025-07-04,267.96,USD
+E002,Bob,Engineering,2025-07-04,490.91,USD
+E003,Charlie,Ops,2025-07-04,207.05,USD
+E004,Diana,Ops,2025-07-04,326.53,USD
+E005,Eve,Shared Services,2025-07-04,425.38,USD
+E001,Alice,Engineering,2025-07-05,438.54,USD
+E002,Bob,Engineering,2025-07-05,240.77,USD
+E003,Charlie,Ops,2025-07-05,434.3,USD
+E004,Diana,Ops,2025-07-05,291.49,USD
+E005,Eve,Shared Services,2025-07-05,437.75,USD
+E001,Alice,Engineering,2025-07-06,361.54,USD
+E002,Bob,Engineering,2025-07-06,242.1,USD
+E003,Charlie,Ops,2025-07-06,267.28,USD
+E004,Diana,Ops,2025-07-06,294.35,USD
+E005,Eve,Shared Services,2025-07-06,381.39,USD
+E001,Alice,Engineering,2025-07-07,307.02,USD
+E002,Bob,Engineering,2025-07-07,327.79,USD
+E003,Charlie,Ops,2025-07-07,226.17,USD
+E004,Diana,Ops,2025-07-07,265.8,USD
+E005,Eve,Shared Services,2025-07-07,385.17,USD
+E001,Alice,Engineering,2025-07-08,411.03,USD
+E002,Bob,Engineering,2025-07-08,440.55,USD
+E003,Charlie,Ops,2025-07-08,256.2,USD
+E004,Diana,Ops,2025-07-08,274.86,USD
+E005,Eve,Shared Services,2025-07-08,464.21,USD
+E001,Alice,Engineering,2025-07-09,485.66,USD
+E002,Bob,Engineering,2025-07-09,422.05,USD
+E003,Charlie,Ops,2025-07-09,482.89,USD
+E004,Diana,Ops,2025-07-09,261.78,USD
+E005,Eve,Shared Services,2025-07-09,491.73,USD
+E001,Alice,Engineering,2025-07-10,332.3,USD
+E002,Bob,Engineering,2025-07-10,304.25,USD
+E003,Charlie,Ops,2025-07-10,338.9,USD
+E004,Diana,Ops,2025-07-10,243.03,USD
+E005,Eve,Shared Services,2025-07-10,213.77,USD

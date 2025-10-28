@@ -1,0 +1,7 @@
+invoice_id,invoice_date,vendor,service,seat_count,charge_amount,currency
+INV-SF-2025-07,2025-07-01,Salesforce,CRM,120.0,24000.0,USD
+INV-WD-2025-07,2025-07-01,Workday,HR,50.0,10000.0,USD
+INV-SL-2025-07,2025-07-01,Slack,Collaboration,200.0,6000.0,USD
+INV-ZM-2025-07,2025-07-01,Zoom,Video Conferencing,150.0,4500.0,USD
+INV-SN-2025-07,2025-07-01,Snowflake,Data Warehouse,,30000.0,USD
+INV-DB-2025-07,2025-07-01,Databricks,Data Platform,,20000.0,USD
